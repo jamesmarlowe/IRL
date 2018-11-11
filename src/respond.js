@@ -24,7 +24,7 @@ const respond = async (text, userId) => {
   if (text.includes('topics?')) {
     const pgres = await query('select * from slackbot.topics');
     console.log('huh', pgres);
-    message.text = pluck('topic', pgres);
+    message.text = pluck('topic', pgres).join('\n');
     axios.post(`${apiUrl}/chat.postMessage`, qs.stringify(message));
   } else if (text.includes('setup')) {
     pipeP(
@@ -36,10 +36,10 @@ const respond = async (text, userId) => {
     const us = await getDBUsers();
     await askUsersAboutTopic(us, t);
   } else if (text.includes('interesting topics')) {
-    message.text = (await getInterestingTopics()).join();
+    message.text = (await getInterestingTopics()).join('\n');
     axios.post(`${apiUrl}/chat.postMessage`, qs.stringify(message));
   } else if (text.includes('known topics')) {
-    message.text = (await getKnownTopics()).join();
+    message.text = (await getKnownTopics()).join('\n');
     axios.post(`${apiUrl}/chat.postMessage`, qs.stringify(message));
   } else {
     message.text = "I don't know that one.";
