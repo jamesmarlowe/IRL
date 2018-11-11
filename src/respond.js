@@ -36,10 +36,10 @@ const respond = async (text, userId) => {
     const us = await getDBUsers();
     await askUsersAboutTopic(us, t);
   } else if (text.includes('interesting topics')) {
-    message.text = await getInterestingTopics();
+    message.text = (await getInterestingTopics()).join();
     axios.post(`${apiUrl}/chat.postMessage`, qs.stringify(message));
   } else if (text.includes('known topics')) {
-    message.text = await getKnownTopics();
+    message.text = (await getKnownTopics()).join();
     axios.post(`${apiUrl}/chat.postMessage`, qs.stringify(message));
   } else {
     message.text = "I don't know that one.";
